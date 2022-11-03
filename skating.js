@@ -2,15 +2,13 @@ const divCanvas = document.querySelector('#divCanvas')
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext("2d");
 
-// let W = canvas.width
-// let H = canvas.height
-
-// divCanvas.style.width, canvas.width = window.innerWidth * 0.80 + 'px'
-// divCanvas.style.height, canvas.height = window.innerHeight * (2 * window.innerWidth * 0.80) + 'px'
+let W = canvas.width
+let H = canvas.height
 
 canvasSize();
 window.addEventListener("resize", event => {
     canvasSize();
+    ctx.imageSmoothingEnabled = false;
 })
 
 function canvasSize() {
@@ -20,28 +18,49 @@ function canvasSize() {
 
     divW = divW.slice(0, (widthSize.length-2))
 
-    alert(Math.floor(window.innerWidth/divW))
+    // alert(Math.floor(window.innerWidth/divW))
     let multiply = Math.floor(window.innerWidth/divW)
 
     divCanvas.style.width = divW * (multiply/2) + 'px'
     divCanvas.style.height = divCanvas.style.width/2
 }
 
-// // Creates character
-// let vIdle = new Image()
-// vIdle.src = 'img/v_idle'
+// Creates character
+let skater = new Image()
+skater.src = 'img/v_idle.png'
 
-// window.onload = () => {
-//     init(true);
-//     render(); //start the animation
-// };
+let xSkater = W/2
+let ySkater = H/2
 
-// function init() {
-    
-// }
+let Skater = {
+    x: xSkater,
+    y: ySkater,
+    W: W/10,
+    H: W/10,
 
-// function render() {
-//     // draw() {
-//     //     ctx.drawImage(nave, this.x, this.y, this.W, this.H)
-//     // }
-// }
+    draw() {
+        ctx.drawImage(skater, this.x, this.y, this.W, this.H)
+    },
+
+    update() {
+        if (upKey && this.y > 0)  {
+            this.y++
+        } else if (downKey && this.y ) {
+            this.y--
+        }
+    },
+}
+
+window.onload = () => {
+    init(true);
+    render(); //start the animation
+};
+
+function init() {
+    Skater.x = W/2 - Skater.W
+    Skater.y = H/2 - Skater.H
+}
+
+function render() {
+    Skater.draw()
+}
